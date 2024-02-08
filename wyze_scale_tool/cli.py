@@ -36,7 +36,6 @@ _LOGGER = logging.getLogger("wyze_scale")
 
 
 async def scan_for_scale(multiple=False):
-    stop_event = asyncio.Event()
 
     found_devices = set()
     result_queue = asyncio.Queue()
@@ -54,8 +53,6 @@ async def scan_for_scale(multiple=False):
             _LOGGER.warning("The first bytes of manufacturer data[0x0870] are not 0x0702 as expected.")
         if device.address not in found_devices:
             found_devices.add(device.address)
-            if not multiple:
-                stop_event.set()
             result_queue.put_nowait((device, advertising_data))
 
     async with BleakScanner(
@@ -63,6 +60,8 @@ async def scan_for_scale(multiple=False):
             service_uuids=[WyzeScaleProtocol.SERVICE]):
         while True:
             yield await result_queue.get()
+            if not multiple:
+                break
 
 
 async def scan(args):
