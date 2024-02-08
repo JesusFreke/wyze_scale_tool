@@ -29,6 +29,7 @@ import re
 
 from bleak import BLEDevice, AdvertisementData, BleakScanner
 
+import wyze_scale_tool
 from wyze_scale_tool.wyze_scale import WyzeScaleProtocol, WyzeScale
 
 _LOGGER = logging.getLogger("wyze_scale")
@@ -353,6 +354,8 @@ async def async_main():
                                                         "it will perform a scan and use the first device found.")
     parser.add_argument("--verbose", "-v", action='count', default=0,
                         help="Print verbose logging. Specify multiple times for more verbocity.")
+    parser.add_argument("--version", action="version", version=wyze_scale_tool.__version__,
+                        help="Show the version and exit.")
 
     subparsers = parser.add_subparsers()
 
