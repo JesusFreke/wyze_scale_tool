@@ -1,4 +1,4 @@
-# wyze_scale_tool - A utility for reading from and controlling a Wyze Scale X
+# wyze_scale_tool - A utility for reading from and managing a Wyze Scale X
 
 This is a proof-of-concept python library and stand-alone program
 for communicating with a Wyze Scale X.
@@ -30,7 +30,7 @@ This also exposes an API that can be used to communicate with a Wyze Scale X
 ```python
 import asyncio
 
-from wyze_scale_tool.wyze_scale import WyzeScale
+from wyze_scale_tool import WyzeScale
 
 async def main():
     mac_address = "AA:BB:CC:DD:EE:FF"

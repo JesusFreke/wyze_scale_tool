@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wyze_scale_tool"
+authors = [
+    { name="Ben Gruver", email="jesusfreke@jesusfreke.com" },
+]
+description = "A utility for reading from and managing a Wyze Scale X"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Topic :: Home Automation"
+]
+license = "BSD-2-clause"
+dependencies = [
+    "bleak",
+    "xxtea"
+]
+keywords = [
+    "wyze",
+    "scale",
+    "wyze scale x"
+]
+dynamic = ["version"]
+
+[project.scripts]
+pynrose = "wyze_scale_tool.cli:main"
+
+[tool.hatch.version]
+path = "wyze_scale_tool/__init__.py"
+
+[project.urls]
+Homepage = "https://github.com/jesusfreke/wyze_scale_tool"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "wyze_scale_tool",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["wyze_scale_tool"]
+

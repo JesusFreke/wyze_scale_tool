@@ -342,7 +342,7 @@ class BoolAction(argparse.Action):
             setattr(namespace, self.dest, value)
 
 
-async def main():
+async def async_main():
     parser = argparse.ArgumentParser(
         description="Utility for reading from and controlling a wyze scale.",
         formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -471,10 +471,14 @@ async def main():
         await args.func(args)
 
 
-if __name__ == "__main__":
+def main():
     try:
-        asyncio.run(main())
+        asyncio.run(async_main())
     except asyncio.CancelledError:
         pass
     except KeyboardInterrupt:
         pass
+
+
+if __name__ == "__main__":
+    main()
