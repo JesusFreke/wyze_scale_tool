@@ -29,7 +29,7 @@ keywords = [
 dynamic = ["version"]
 
 [project.scripts]
-pynrose = "wyze_scale_tool.cli:main"
+wyze_scale_tool = "wyze_scale_tool.cli:main"
 
 [tool.hatch.version]
 path = "wyze_scale_tool/__init__.py"
