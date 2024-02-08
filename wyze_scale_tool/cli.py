@@ -240,10 +240,10 @@ class MacAction(argparse.Action):
                  option_strings,
                  dest,
                  default=None,
-                 arg_type=None,
+                 type=None,
                  choices=None,
                  required=False,
-                 arg_help=None,
+                 help=None,
                  metavar=None):
 
         super().__init__(
@@ -251,10 +251,10 @@ class MacAction(argparse.Action):
             dest=dest,
             nargs=1,
             default=default,
-            type=arg_type,
+            type=type,
             choices=choices,
             required=required,
-            help=arg_help,
+            help=help,
             metavar=metavar)
 
     def __call__(self, parser, namespace, values, option_string=None):
@@ -272,10 +272,10 @@ class UserIdAction(argparse.Action):
                  option_strings,
                  dest,
                  default=None,
-                 arg_type=None,
+                 type=None,
                  choices=None,
                  required=False,
-                 arg_help=None,
+                 help=None,
                  metavar=None):
 
         super().__init__(
@@ -283,10 +283,10 @@ class UserIdAction(argparse.Action):
             dest=dest,
             nargs=1,
             default=default,
-            type=arg_type,
+            type=type,
             choices=choices,
             required=required,
-            help=arg_help,
+            help=help,
             metavar=metavar)
 
     def __call__(self, parser, namespace, values, option_string=None):
@@ -304,10 +304,10 @@ class BoolAction(argparse.Action):
                  option_strings,
                  dest,
                  default=True,
-                 arg_type=None,
+                 type=None,
                  choices=None,
                  required=False,
-                 arg_help=None,
+                 help=None,
                  metavar=None):
 
         super().__init__(
@@ -315,10 +315,10 @@ class BoolAction(argparse.Action):
             dest=dest,
             nargs='?',
             default=default,
-            type=arg_type,
+            type=type,
             choices=choices,
             required=required,
-            help=arg_help,
+            help=help,
             metavar=metavar)
 
     def __call__(self, parser, namespace, values, option_string=None):
@@ -344,34 +344,13 @@ class BoolAction(argparse.Action):
 
 async def main():
     parser = argparse.ArgumentParser(
-        description="Tools for reading from and controlling a wyze scale.",
-        epilog=("Example usage (with implicit device selection, and no user selection):\n"
-                "----------------------------------------------------------------------\n\n"
-                "$ wyze_scale_tool weights\n"
-                "Weight record: timestamp=2024-02-07 09:31:57, user_id=b'112233445566778899aabbccddeeff00', sex=M, "
-                "age=20, height=180, athlete_mode=1, only_weight=0, weight=64.6kg|142.42lb, impedance=3140, bfp=50, "
-                "muscleMass=575, boneMass=38, water=695, protein=196, lbm=613, vfal=6, bmr=1695, bodyAge=20, "
-                "bmi=199\n\n"
-                "Example usage (with explicit device and user selection):\n"
-                "--------------------------------------------------------\n\n"
-                "$ wyze_scale_tool scan\n"
-                "AA:BB:CC:DD:EE:FF\n"
-                "\n"
-                "$ wyze_scale_tool --mac AA:BB:CC:DD:EE:FF users\n"
-                "user_id=b'112233445566778899aabbccddeeff00', weight=60.0kg|132.28lb, sex=M, age=20, height=180, "
-                "athlete_mode=1, only_weight=0, last_imp=1234\n"
-                "\n"
-                "$ wyze_scale_tool --mac AA:BB:CC:DD:EE:FF weights --user 112233445566778899aabbccddeeff00\n"
-                "Weight record: timestamp=2024-02-07 09:31:57, user_id=b'112233445566778899aabbccddeeff00', sex=M, "
-                "age=20, height=180, athlete_mode=1, only_weight=0, weight=64.6kg|142.42lb, impedance=3140, bfp=50, "
-                "muscleMass=575, boneMass=38, water=695, protein=196, lbm=613, vfal=6, bmr=1695, bodyAge=20, "
-                "bmi=199\n\n"),
+        description="Utility for reading from and controlling a wyze scale.",
         formatter_class=argparse.RawDescriptionHelpFormatter)
 
     parser.set_defaults(command=None)
 
-    parser.add_argument("--mac", action=MacAction, type=str, help="The bluetooth MAC address of the scale. If no MAC is provided,"
-                                                      "it will perform a scan and use the first device found.")
+    parser.add_argument("--mac", action=MacAction, help="The bluetooth MAC address of the scale. If no MAC is provided,"
+                                                        "it will perform a scan and use the first device found.")
     parser.add_argument("--verbose", "-v", action='count', default=0,
                         help="Print verbose logging. Specify multiple times for more verbocity.")
 
