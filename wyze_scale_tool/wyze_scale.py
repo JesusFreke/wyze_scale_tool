@@ -743,8 +743,8 @@ class WyzeScale(object):
         while message is not None:
             if isinstance(message, HistoricalWeightData):
                 if user_data.user_id == message.user_id:
-                    await self._protocol.send_historical_weight_data_response()
                     yield message
+                    await self._protocol.send_historical_weight_data_response()
                 else:
                     raise IOError("Unexpectedly got historical weight for a different user")
             message = await self._protocol.next_message()
