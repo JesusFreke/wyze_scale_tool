@@ -342,6 +342,7 @@ class WyzeScaleProtocol(object):
 
     async def disconnect(self):
         if self._device is not None and self._device.is_connected:
+            await self._device.stop_notify(self._characteristic)
             await self._device.disconnect()
             self._device = None
 
@@ -373,11 +374,11 @@ class WyzeScaleProtocol(object):
 
         self._read_queue.put_nowait(reply_class(decrypted_buf[0:payload_length]))
 
-    async def next_message(self, timeout_s=5):
+    async def next_message(self, timeout_s=2):
         start_time = time.time()
         while time.time() - start_time < timeout_s:
             try:
-                next_timeout = (time.time() - start_time)
+                next_timeout = (start_time + timeout_s) - time.time()
                 if next_timeout < 0:
                     next_timeout = 0
                 message = await asyncio.wait_for(self._read_queue.get(), next_timeout)
@@ -388,13 +389,13 @@ class WyzeScaleProtocol(object):
                 pass
         return None
 
-    async def wait_for_message(self, reply_class, timeout_s=5):
+    async def wait_for_message(self, reply_class, timeout_s=2):
         start_time = time.time()
         unwanted_messages = []
         try:
             while time.time() - start_time < timeout_s:
                 try:
-                    next_timeout = (time.time() - start_time)
+                    next_timeout = (start_time + timeout_s) - time.time()
                     if next_timeout < 0:
                         next_timeout = 0
                     message = await asyncio.wait_for(self._read_queue.get(), next_timeout)
@@ -739,7 +740,7 @@ class WyzeScale(object):
         if not result:
             raise IOError("Error selecting user")
 
-        message = await self._protocol.next_message()
+        message = await self._protocol.wait_for_message(HistoricalWeightData)
         while message is not None:
             if isinstance(message, HistoricalWeightData):
                 if user_data.user_id == message.user_id:
